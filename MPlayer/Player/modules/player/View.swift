@@ -136,35 +136,30 @@ class PlayerView: UIView {
             self.isHorizontalScreen = judgeIsHorizontalScreen()
             let isVerticalScreen = !self.isHorizontalScreen
             
-            let isVertical = isFullScreen ? size.height / size.width > BasicUtils.SCREEN_WIDTH / BasicUtils.SCREEN_HEIGHT : isVerticalScreen
-            
-            if isVertical {
+            if isVerticalScreen {
                 // 竖屏
                 if isFullScreen {
-                    let playerWidth = BasicUtils.SCREEN_HEIGHT / size.height * size.width
-                    return CGRectMake((BasicUtils.SCREEN_WIDTH - playerWidth) / 2, 0, playerWidth, BasicUtils.SCREEN_HEIGHT)
+                    let playerWidth = BasicUtils.getScreenHeight() / size.height * size.width
+                    return CGRectMake((BasicUtils.getScreenWidth() - playerWidth) / 2, 0, playerWidth, BasicUtils.getScreenHeight())
                 }
                 
-                let playerWidth = BasicUtils.PLAYER_WIDTH / size.height * size.width
-                return CGRectMake((BasicUtils.SCREEN_WIDTH - playerWidth) / 2, 0, playerWidth, BasicUtils.PLAYER_WIDTH)
+                let playerWidth = BasicUtils.getPlayerWidth() / size.height * size.width
+                return CGRectMake((BasicUtils.getScreenWidth() - playerWidth) / 2, 0, playerWidth, BasicUtils.getPlayerWidth())
             }
             
             // 横屏
             if isFullScreen {
-                let playerHeight = BasicUtils.SCREEN_WIDTH / size.height * size.width
-                return CGRectMake(0, (BasicUtils.SCREEN_HEIGHT - playerHeight) / 2, BasicUtils.SCREEN_WIDTH, playerHeight)
+                // let playerHeight = BasicUtils.getScreenWidth() / size.width * size.height
+                print("screent width: \(BasicUtils.getScreenWidth())")
+                print("screent height: \(BasicUtils.getScreenHeight())")
+                return CGRectMake(0, 0, BasicUtils.getScreenHeight(), BasicUtils.getScreenWidth())
             }
             
-            let playerHeight = BasicUtils.SCREEN_WIDTH / size.width * size.height
-            return CGRectMake(0, (BasicUtils.PLAYER_WIDTH - playerHeight) / 2, BasicUtils.SCREEN_WIDTH, playerHeight)
+            let playerHeight = BasicUtils.getScreenWidth() / size.width * size.height
+            return CGRectMake(0, (BasicUtils.getPlayerWidth() - playerHeight) / 2, BasicUtils.getScreenWidth(), playerHeight)
         }
         
-        return CGRectMake(0, 0, BasicUtils.SCREEN_WIDTH, BasicUtils.PLAYER_WIDTH)
-    }
-    
-    // 判断是否为横屏
-    private func judgeIsHorizontalScreen() -> Bool {
-        return UIDevice.current.orientation.isLandscape
+        return CGRectMake(0, 0, BasicUtils.getScreenWidth(), BasicUtils.getPlayerWidth())
     }
     
     // 判断是否网上资源
@@ -227,6 +222,11 @@ extension PlayerView {
     package func getVideoPlayer() -> AVPlayer? {
         self.videoPlayer
     }
+    
+    // 获取 videoPlayerLayer
+    package func getVideoPlayerLayer() -> AVPlayerLayer? {
+        self.videoPlayerLayer
+    }
  
     // 设置是否全屏
     package func setIsFullscreen(_ isFullscreen: Bool) {
@@ -238,8 +238,19 @@ extension PlayerView {
         self.isFullScreen
     }
     
+    // 判断是否为横屏
+    package func judgeIsHorizontalScreen() -> Bool {
+        return UIDevice.current.orientation.isLandscape
+    }
+    
     // 判断是否横屏
     package func getIsHorizontalScreen() -> Bool {
         return self.isHorizontalScreen
+    }
+    
+    // 设置全屏状态下的 frame
+    package func setFullFrame() {
+        self.videoPlayerLayer?.frame = self.getPlayerFrame()
+        self.frame = CGRectMake(0, 0, BasicUtils.getScreenHeight(), BasicUtils.getScreenWidth())
     }
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D834EEB22B56116000BF5CA7 /* More.swift in Sources */ = {isa = PBXBuildFile; fileRef = D834EEB12B56116000BF5CA7 /* More.swift */; };
+		D834EEB42B564CCE00BF5CA7 /* FullscreenControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D834EEB32B564CCE00BF5CA7 /* FullscreenControl.swift */; };
 		D84FFA8E2B50F91600BAE01F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84FFA8D2B50F91600BAE01F /* AppDelegate.swift */; };
 		D84FFA902B50F91600BAE01F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84FFA8F2B50F91600BAE01F /* SceneDelegate.swift */; };
 		D84FFA922B50F91600BAE01F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84FFA912B50F91600BAE01F /* ViewController.swift */; };
@@ -31,10 +33,12 @@
 		D8ACFCC42B54FA2B002E7357 /* Panel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ACFCC32B54FA2B002E7357 /* Panel.swift */; };
 		D8ACFCC82B5502EA002E7357 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ACFCC72B5502EA002E7357 /* Manager.swift */; };
 		D8ACFCCA2B550DDE002E7357 /* OtherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ACFCC92B550DDE002E7357 /* OtherView.swift */; };
-		D8ACFCCC2B552F81002E7357 /* FullMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ACFCCB2B552F81002E7357 /* FullMask.swift */; };
+		D8ACFCCC2B552F81002E7357 /* Fullscreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ACFCCB2B552F81002E7357 /* Fullscreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D834EEB12B56116000BF5CA7 /* More.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = More.swift; sourceTree = "<group>"; };
+		D834EEB32B564CCE00BF5CA7 /* FullscreenControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenControl.swift; sourceTree = "<group>"; };
 		D84FFA8A2B50F91600BAE01F /* MPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D84FFA8D2B50F91600BAE01F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D84FFA8F2B50F91600BAE01F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,7 +65,7 @@
 		D8ACFCC32B54FA2B002E7357 /* Panel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Panel.swift; sourceTree = "<group>"; };
 		D8ACFCC72B5502EA002E7357 /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 		D8ACFCC92B550DDE002E7357 /* OtherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherView.swift; sourceTree = "<group>"; };
-		D8ACFCCB2B552F81002E7357 /* FullMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullMask.swift; sourceTree = "<group>"; };
+		D8ACFCCB2B552F81002E7357 /* Fullscreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fullscreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,7 +203,9 @@
 				D84FFAE12B510E3600BAE01F /* View.swift */,
 				D8ACFCA22B54BF92002E7357 /* Control.swift */,
 				D8ACFCC72B5502EA002E7357 /* Manager.swift */,
-				D8ACFCCB2B552F81002E7357 /* FullMask.swift */,
+				D8ACFCCB2B552F81002E7357 /* Fullscreen.swift */,
+				D834EEB12B56116000BF5CA7 /* More.swift */,
+				D834EEB32B564CCE00BF5CA7 /* FullscreenControl.swift */,
 			);
 			path = player;
 			sourceTree = "<group>";
@@ -278,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D834EEB22B56116000BF5CA7 /* More.swift in Sources */,
 				D8ACFCC42B54FA2B002E7357 /* Panel.swift in Sources */,
 				D84FFADE2B510B8000BAE01F /* EndView.swift in Sources */,
 				D84FFAD22B51007800BAE01F /* VideoView.swift in Sources */,
@@ -292,9 +299,10 @@
 				D8ACFCCA2B550DDE002E7357 /* OtherView.swift in Sources */,
 				D84FFAE02B510BCF00BAE01F /* NoNetworkView.swift in Sources */,
 				D84FFAE42B5114DC00BAE01F /* NetworkManager.swift in Sources */,
-				D8ACFCCC2B552F81002E7357 /* FullMask.swift in Sources */,
+				D8ACFCCC2B552F81002E7357 /* Fullscreen.swift in Sources */,
 				D84FFADC2B51049500BAE01F /* Icons.swift in Sources */,
 				D84FFA902B50F91600BAE01F /* SceneDelegate.swift in Sources */,
+				D834EEB42B564CCE00BF5CA7 /* FullscreenControl.swift in Sources */,
 				D8ACFCA32B54BF92002E7357 /* Control.swift in Sources */,
 				D84FFAB02B50F9F800BAE01F /* PlayerConfig.swift in Sources */,
 			);

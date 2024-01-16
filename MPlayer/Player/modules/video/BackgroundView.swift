@@ -30,7 +30,7 @@ class BackgroundView: UIView {
     @objc private func removeCacheView() {
         UIView.animate(withDuration: 0.2, animations: {
             self.view.alpha = 0
-            self.cacheView.frame = CGRect(x: 0, y: BasicUtils.SCREEN_WIDTH, width: BasicUtils.SCREEN_HEIGHT, height: BasicUtils.VIDEO_HEIGHT)
+            self.cacheView.frame = CGRect(x: 0, y: BasicUtils.getScreenWidth(), width: BasicUtils.getScreenHeight(), height: BasicUtils.VIDEO_HEIGHT)
         }) { (success) in
             self.view.isHidden = true
             self.cacheView.removeFromSuperview()

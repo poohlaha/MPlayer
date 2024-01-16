@@ -29,7 +29,7 @@ class VideoView: UIView {
         // 初始化 size
         let bounds: CGRect
         if frame == nil {
-            bounds = CGRectMake(0, 0, BasicUtils.SCREEN_WIDTH, BasicUtils.PLAYER_WIDTH) // 宽度的 16 比 9
+            bounds = CGRectMake(0, 0, BasicUtils.getScreenWidth(), BasicUtils.getPlayerWidth()) // 宽度的 16 比 9
         } else {
             bounds = frame!
         }

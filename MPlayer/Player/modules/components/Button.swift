@@ -18,7 +18,7 @@ class MButton: UIButton {
     }
     
     // 设置按钮图片
-    func setImage(imageName: String) {
+    func setImage(_ imageName: String) {
         self.setImage(UIImage(named: imageName, in: BasicUtils.SOURCE_BUNDLE, compatibleWith: nil), for: .normal)
     }
 }

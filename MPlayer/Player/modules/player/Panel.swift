@@ -30,8 +30,8 @@ class PlayerPanelView: UIView {
     // 没有网络时的视图
     private var noNetworkView: NoNetworkView!
     
-    // 全屏时的遮罩
-    var fullMarkView: FullMaskView?
+    // 全屏时的视频
+    private var fullscreenView: FullscreenView?
     
     // 初始化
     init(_ frame: CGRect, _ config: PlayerConfig) {
@@ -47,6 +47,9 @@ class PlayerPanelView: UIView {
         
         // 注册事件
         initEvents()
+        
+        // 初始化监听事件
+        inintListeners()
     }
     
     required init?(coder: NSCoder) {
@@ -75,8 +78,11 @@ class PlayerPanelView: UIView {
         // 创建播放器控制面板 view
         createControlView()
         
-        // 创建浏量播放视图
+        // 创建流量播放视图
         createFlowView()
+        
+        // 创建全屏播放视频
+        createFullscreenView()
     }
     
     // 创建视频 view
@@ -102,6 +108,13 @@ class PlayerPanelView: UIView {
         self.addSubview(flowView)
     }
     
+    // 创建全屏视图
+    private func createFullscreenView() {
+        fullscreenView = FullscreenView(CGRectMake(0, 0, BasicUtils.getScreenHeight(), BasicUtils.getScreenWidth()))
+        fullscreenView?.delegate = self
+        fullscreenView?.isHidden = true
+        addSubview(fullscreenView!)
+    }
     
     // 注册事件
     func initEvents() {
@@ -111,8 +124,31 @@ class PlayerPanelView: UIView {
         controlView.timeSlider.addTarget(self, action: #selector(timeSliderTouchUp(_:)), for: .touchUpOutside)
         controlView.timeSlider.addTarget(self, action: #selector(timeSliderDown(_:)), for: .touchDown)
         controlView.timeSlider.addTarget(self, action: #selector(timeSliderDraging(_:)), for: .valueChanged)
+    }
+    
+    // 初始化监听事件
+    func inintListeners() {
+        // 监听设备旋转
+        NotificationCenter.default.addObserver(self,  selector: #selector(listenDeviceRotate), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+   
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+
+// MARK: Delegate
+extension PlayerPanelView: FullscreenViewDelegate {
+    
+    // 更改速度
+    func changeSpeed() {
         
     }
+    
+}
+
+// MARK: 播放器的一些事件
+extension PlayerPanelView {
     
     // 播放视频
     func playVideo(_ config: PlayerConfig) {
@@ -175,10 +211,6 @@ class PlayerPanelView: UIView {
             
         }
     }
-}
-
-// MARK: 播放器的一些事件
-extension PlayerPanelView {
     
     // 点击屏幕，显示控制面板
     @objc private func playerViewDidTapped() {
@@ -193,12 +225,12 @@ extension PlayerPanelView {
         }
         
         if playStatus == .playing {
-            manager.setPlayerStatus(.pause)
+            pause()
             return
         }
        
         if playStatus == .pause {
-            manager.setPlayerStatus(.playing)
+            play()
         }
     }
     
@@ -292,40 +324,76 @@ extension PlayerPanelView {
     }
     
     // 设备旋转, orientationChange: 是否为设备旋转
-    private func changeOrientation(_ orientationChange: Bool = false) {
-        self.videoView.setIsFullscreen(self.videoView.getIsFullscreen())
+    private func changeOrientation() {
+        print("Change Orientation")
+        // 判断是否已经是横屏
+        let isHorizontalScreen = self.videoView.getIsHorizontalScreen()
+        let orientation = UIDevice.current.orientation
         
-        let isFullscreen = self.videoView.getIsFullscreen()
-        if isFullscreen {
-            handleFullscreen(orientationChange)
-        } else if isFullscreen == false {
-            handleFullscreen()
+        // 如果已经是横屏，并且是全屏状态，可直接不作处理
+        if isHorizontalScreen && (orientation == .landscapeRight || orientation == .landscapeLeft) && self.videoView.getIsFullscreen() {
+            return
         }
+        
+        let isFullScreen = self.videoView.judgeIsHorizontalScreen()
+        self.videoView.setIsFullscreen(isFullScreen)
+        
+        if !self.videoView.getIsFullscreen() {
+            fullscreenView?.isHidden = true
+            return
+        }
+        
+        handleFullscreen()
     }
     
     // 全屏处理
-    private func handleFullscreen(_ orientationChange: Bool = false) {
-        self.backgroundColor = .black
-        
-        let isHorizontalScreen = self.videoView.getIsHorizontalScreen()
-        if !isHorizontalScreen {
-            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-        } else if orientationChange {
-            let orientation = UIDevice.current.orientation
-            if orientation == .landscapeRight {
-                UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
-            } else if orientation == .landscapeRight {
-                UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-            }
+    private func handleFullscreen() {
+        let orientation = UIDevice.current.orientation
+        if orientation == .landscapeRight {
+            UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
+        } else if orientation == .landscapeLeft {
+            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
         } else {
             UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
         }
         
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            windowScene.keyWindow?.addSubview(self)
+        self.videoView.setFullFrame()
+        fullscreenView?.isHidden = false
+        fullscreenView?.setTitle(self.config.title ?? "")
+        
+        print("fullscreenView frame: \(fullscreenView?.frame)")
+        print("videoView frame: \(videoView?.frame)")
+        print("videoPlayerLayer frame: \(videoView?.getVideoPlayerLayer()?.frame)")
+        
+        // 隐藏竖屏控制面板
+        controlView.isHidden = true
+        
+        removeFromSuperview()
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let mainWindow = windowScene.windows.first {
+            mainWindow.addSubview(self)
+        }
+        bringSubviewToFront(fullscreenView!)
+    }
+}
+
+// MARK: 监听手机事件
+extension PlayerPanelView {
+    
+    // 监听设备旋转
+    @objc private func listenDeviceRotate() {
+        print("device rotate")
+        if fullscreenView === nil {
+            return
         }
         
-        bringSubviewToFront(self.controlView)
+        // 判断是否为锁定屏幕 或 锁定屏幕旋转
+        if fullscreenView!.getIsScreenLock() || fullscreenView!.getIsOrientationRotateLock() {
+            return
+        }
+        
+        print("rotate size: \(UIScreen.main.bounds)")
+        changeOrientation()
     }
 }
 
@@ -359,7 +427,6 @@ extension PlayerPanelView {
     
     // 重新播放
     func replay() {
-        // TODO
         self.videoView.setSeek(CMTime(seconds: 0, preferredTimescale: 1))
         self.manager.setPlayerStatus(.playing)
     }

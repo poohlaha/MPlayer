@@ -49,17 +49,17 @@ class PlayerControlView: UIView {
         print("player bounds: \(bounds)")
         
         // 播放|暂停按钮
-        let playButtonPoint = Point(width: 40, height: 40)
+        let playButtonPoint = Point(width: 20, height: 20)
         playButton = MButton()
-        playButton.setImage(imageName: VIDEO_PLAY_BUTTON_IMAGE_NAME)
-        playButton.frame = CGRectMake(0, 0, playButtonPoint.width, playButtonPoint.height)
+        playButton.setImage(VIDEO_PLAY_BUTTON_IMAGE_NAME)
+        playButton.frame = CGRectMake(BasicUtils.PLAYER_LEFT_OR_RIGHT_PADDING, (bounds.height - playButtonPoint.height) / 2, playButtonPoint.width, playButtonPoint.height)
         addSubview(playButton)
         
         // 全屏按钮
         let fullscreenButtonPoint = Point(width: 40, height: 30)
         fullscreenButton = MButton()
-        fullscreenButton.setImage(imageName: PLAYER_FULLSCREEN_IMAGE_NAME)
-        fullscreenButton.frame = CGRectMake(bounds.size.width - fullscreenButtonPoint.width, bounds.size.height - 5 - fullscreenButtonPoint.height, fullscreenButtonPoint.width, fullscreenButtonPoint.height)
+        fullscreenButton.setImage(PLAYER_FULLSCREEN_IMAGE_NAME)
+        fullscreenButton.frame = CGRectMake(bounds.width - fullscreenButtonPoint.width  - BasicUtils.PLAYER_LEFT_OR_RIGHT_PADDING , (bounds.size.height - fullscreenButtonPoint.height) / 2, fullscreenButtonPoint.width, fullscreenButtonPoint.height)
         addSubview(fullscreenButton)
         
         // 播放时间
@@ -78,7 +78,7 @@ class PlayerControlView: UIView {
         totalTimeLabel.text = "00:00"
         totalTimeLabel.font = UIFont.boldSystemFont(ofSize: 13)
         totalTimeLabel.textColor = .white
-        totalTimeLabel.frame = CGRectMake(fullscreenButton.frame.minX - 8 - totalTimeLabelPoint.width, (bounds.height - totalTimeLabelPoint.height) / 2, totalTimeLabelPoint.width, totalTimeLabelPoint.height)
+        totalTimeLabel.frame = CGRectMake(fullscreenButton.frame.minX - BasicUtils.PLAYER_LEFT_OR_RIGHT_PADDING - totalTimeLabelPoint.width, (bounds.height - totalTimeLabelPoint.height) / 2, totalTimeLabelPoint.width, totalTimeLabelPoint.height)
         addSubview(totalTimeLabel)
         
         // 播放器时间进度滑动条

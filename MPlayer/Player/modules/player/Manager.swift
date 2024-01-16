@@ -104,7 +104,6 @@ class PlayerManager: NSObject {
             if let status = playerStatus {
                 // 按钮设置
                 if let controlPlayImage = status.controlPlayImage {
-                    
                     self.panelView?.getControlView().updatePlayImage(controlPlayImage)
                 }
                
